@@ -1,0 +1,50 @@
+Cascading Backend for Ruby i18n
+===============================
+
+The Cascading Backend allows for, well, cascaded lookups. This is especially useful if you want to have some general
+translations that you only want to override for some locales in more concrete uses.
+
+Example
+=======
+
+Say, you have the following structure in your locale file:
+  
+  :en => {
+    :title => 'Title',
+    :article => {
+      :title => 'Article title'
+    },
+    :topic => {}
+  },
+  :de => {
+    :title => 'Titel',
+    :article => {},
+    :topic => {
+      :title => 'Thema'
+    }
+  }
+
+You have some general translation for :title that you usually want to use. The English locale then defines a custom
+translation for article titles and the German translation defines one for topic titles.
+
+With the Cascading backend, you get the following results:
+
+  I18n.translate(:title, :locale => :en)            # => "Title"
+  I18n.translate(:title, :locale => :de)            # => "Titel"
+
+  I18n.translate(:'article.title', :locale => :en)  # => "Article title"
+  I18n.translate(:'article.title', :locale => :de)  # => "Titel"
+
+  I18n.translate(:'topic.title', :locale => :en)    # => "Title"
+  I18n.translate(:'topic.title', :locale => :de)    # => "Thema"
+
+If you make use of I18n's :default mechanism, your own defaults take precedence over the cascaded ones:
+
+  I18n.translate(:'topic.title', :default => 'Topic title', :locale => :en)    # => "Topic title"
+
+Feedback
+========
+
+Feel free to send me any feedback you might have and also feel free to fork away! ;-)
+
+Copyright (c) 2009 Clemens Kofler <clemens@railway.at>, www.railway.at, released under the MIT license
