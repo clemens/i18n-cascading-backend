@@ -2,7 +2,7 @@ require 'i18n'
 
 module I18n
   module Backend
-    class Cascading < Simple
+    module Cascading
       def translate(locale, key, options={})
         unless options[:cascade] == false
           options[:default] = Array(options[:default]) + decascade(locale, key, options[:scope], options[:separator])

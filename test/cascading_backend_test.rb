@@ -17,7 +17,10 @@ end
 
 class CascadingBackendTest < Test::Unit::TestCase
   def setup
-    I18n.backend = I18n::Backend::Cascading.new
+    I18n.backend = I18n::Backend::Simple.new
+    class << I18n.backend
+      include I18n::Backend::Cascading
+    end
     I18n.backend.store_translations :en, {
       :bat => 'bat',
       :outermost => {
